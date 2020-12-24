@@ -1,0 +1,29 @@
+version: 3
+
+services:
+  get5-web:
+    build: docker/Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_ROOT_USER=
+      - MYSQL_ROOT_PASSWORD=
+      - DOMAIN=
+      - EMAIL=
+
+  mariadb:
+    image: bitnami/mariadb:10.5-debian-10
+    environment:
+      - MARIADB_ROOT_PASSWORD=
+    volumes:
+      - data:/bitnami/mariadb/data
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+
+volumes:
+  data:
+    driver: local
